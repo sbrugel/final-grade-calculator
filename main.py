@@ -1,4 +1,4 @@
-from PIL import Image, ImageDraw
+from PIL import Image, ImageDraw, ImageOps
 
 def main():
     inputstr = 'X'
@@ -18,7 +18,7 @@ def main():
                     print('Invalid input received. Please re-enter your input.')
                     continue
             else:
-                if inputstr[0] < 0 or inputstr[1] < 0 or inputstr[1] > 1:
+                if float(inputstr[0]) < 0 or float(inputstr[1]) < 0 or float(inputstr[1]) > 1:
                     print('Invalid input received. Please re-enter your input.')
                     continue
 
@@ -66,28 +66,31 @@ def main():
 
         total = round((((sum(weighted_grades) - target) / unknown_weight) * -1), 2)
 
+        print('===RESULTS===')
         if total > 100:
-            print('It looks like this grade isn\'t possible :( Technically...')
+            print('\tIt looks like this grade isn\'t possible :( Technically...')
         elif total < 0:
-            print('It looks like this grade isn\'t possible :) Technically...')
-        print('You will need about a ' + str(total) + '% to achieve a final grade of ' + str(target) + '%.')
+            print('\tIt looks like this grade isn\'t possible :) Technically...')
+        print('\tYou will need about a ' + str(total) + '% to achieve a final grade of ' + str(target) + '%.')
+        print('\tThe highest final grade that can be achieved (grade on assignment is 100%) is ' + str(sum(weighted_grades) + (100*unknown_weight)))
+        print('\tThe lowest final grade that can be achieved (grade on assignment is 0%) is ' + str(sum(weighted_grades)))
 
         # ask user if they want image drawn here
+        print('Would you like a graph drawn of achieved grades vs. final grade achieved? (y/n) > ')
+        y_n = input()
+        if y_n == 'y' or y_n == 'Y':
+            draw_image(weighted_grades, unknown_weight)
 
         valid_input = True
 
 def draw_image(weighted_grades, unknown_weight):
-    image = Image.new('RGB', (560, 280), (255, 255, 255)) # white background
+    image = Image.new('RGB', (560, 275), (255, 255, 255)) # white background
 
     # set up canvas
     draw = ImageDraw.Draw(image)
 
-    # draw axes
-    draw.line([(50, 40), (50, 250)], (0,0,0))
-    draw.line([(50, 250), (530, 250)], (0,0,0))
-
     # draw labels (y-axis)
-    draw.text((5, 20),  'Required Grade', (255,0,0))
+    draw.text((5, 20),  'Final Grade', (255,0,0))
     draw.text((25, 40), '100%', (0,0,0))
     draw.text((25, 60), '90%', (0,0,0))
     draw.text((25, 80), '80%', (0,0,0))
@@ -98,22 +101,51 @@ def draw_image(weighted_grades, unknown_weight):
     draw.text((25, 180), '30%', (0,0,0))
     draw.text((25, 200), '20%', (0,0,0))
     draw.text((25, 220), '10%', (0,0,0))
-    draw.text((25, 250), '0%', (0,0,0))
+    draw.text((25, 245), '0%', (0,0,0))
+
+    # draw gridlines (for y-values)
+    for i in range(45, 265, 20):
+        draw.line([(50, i), (525, i)], (171, 171, 171))
 
     # draw labels (x-axis)
-    draw.text((250, 260),  'Grade Achieved', (0,0,255), None, 4, 'center')
-    draw.text((525, 250), '100%', (0,0,0))
-    draw.text((475, 250), '90%', (0,0,0))
-    draw.text((425, 250), '80%', (0,0,0))
-    draw.text((375, 250), '70%', (0,0,0))
-    draw.text((325, 250), '60%', (0,0,0))
-    draw.text((275, 250), '50%', (0,0,0))
-    draw.text((225, 250), '40%', (0,0,0))
-    draw.text((175, 250), '30%', (0,0,0))
-    draw.text((125, 250), '20%', (0,0,0))
-    draw.text((75, 250), '10%', (0,0,0))
-    draw.text((25, 250), '0%', (0,0,0))
+    draw.text((240, 255), 'Grade Achieved', (0,0,255), None, 4, 'center')
+    draw.text((520, 245), '100%', (0,0,0))
+    draw.text((470, 245), '90%', (0,0,0))
+    draw.text((420, 245), '80%', (0,0,0))
+    draw.text((370, 245), '70%', (0,0,0))
+    draw.text((320, 245), '60%', (0,0,0))
+    draw.text((270, 245), '50%', (0,0,0))
+    draw.text((220, 245), '40%', (0,0,0))
+    draw.text((170, 245), '30%', (0,0,0))
+    draw.text((120, 245), '20%', (0,0,0))
+    draw.text((70, 245), '10%', (0,0,0))
+    draw.text((25, 245), '0%', (0,0,0))
 
-    image = image.save("C:\\Users\\sbrug\\Desktop\\test.png")
+    # draw gridlines (for x-values)
+    for i in range(75, 575, 50):
+        draw.line([(i, 245), (i, 45)], (171, 171, 171))
 
-draw_image()
+    # draw axes
+    draw.line([(50, 40), (50, 245)], (0,0,0))
+    draw.line([(50, 245), (530, 245)], (0,0,0))
+
+    # calculate line to draw
+    known_total = sum(weighted_grades)
+    grade_at_0 = known_total
+    grade_at_100 = known_total + (100*unknown_weight)
+
+    startpoint = (50, (240 - (grade_at_0*2)) + 5)
+    endpoint = (525, (240 - (grade_at_100*2)) + 5)
+
+    # draw main line
+    draw.line([startpoint, endpoint], (0,255,0))
+
+    print('What folder would you like to save this file in? > (don\'t include the trailing backslash) ')
+    folder = input()
+    print('What name would you like to save the file as? (don\'t include the leading backslash/trailing extension) > ')
+    name = input()
+
+    image = ImageOps.scale(image, 2) # scale the image for ease of reading
+    image = image.save(folder + '\\' + name + '.png')
+
+main()
