@@ -28,7 +28,7 @@ def main():
 
         unknown_weight = 0
         while unknown_weight == 0:
-            print('Now enter your unknown grade\'s weight (decimal from 0 to 1), separated by a space. > ')
+            print('Now enter your unknown grade\'s weight (decimal from 0 to 1). > ')
             try:
                 unknown_weight = float(input())
             except:
@@ -72,8 +72,8 @@ def main():
         elif total < 0:
             print('\tIt looks like this grade isn\'t possible :) Technically...')
         print('\tYou will need about a ' + str(total) + '% to achieve a final grade of ' + str(target) + '%.')
-        print('\tThe highest final grade that can be achieved (grade on assignment is 100%) is ' + str(sum(weighted_grades) + (100*unknown_weight)))
-        print('\tThe lowest final grade that can be achieved (grade on assignment is 0%) is ' + str(sum(weighted_grades)))
+        print('\tThe highest final grade that can be achieved (grade on assignment is 100%) is ' + str(sum(weighted_grades) + (100*unknown_weight)) + '%')
+        print('\tThe lowest final grade that can be achieved (grade on assignment is 0%) is ' + str(sum(weighted_grades)) + '%')
 
         # ask user if they want image drawn here
         print('Would you like a graph drawn of achieved grades vs. final grade achieved? (y/n) > ')
