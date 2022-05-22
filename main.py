@@ -1,9 +1,11 @@
+from PIL import Image, ImageDraw
+
 def main():
     inputstr = 'X'
     grades = []
     weights = []
     valid_input = False
-    
+
     while not valid_input:
         while not inputstr[0] == '':
             print('Enter a known grade (decimal from 0) and its weight (decimal from 0 to 1), separated by a space. To stop inputting grades, enter nothing. > ')
@@ -70,6 +72,48 @@ def main():
             print('It looks like this grade isn\'t possible :) Technically...')
         print('You will need about a ' + str(total) + '% to achieve a final grade of ' + str(target) + '%.')
 
+        # ask user if they want image drawn here
+
         valid_input = True
 
-main()
+def draw_image(weighted_grades, unknown_weight):
+    image = Image.new('RGB', (560, 280), (255, 255, 255)) # white background
+
+    # set up canvas
+    draw = ImageDraw.Draw(image)
+
+    # draw axes
+    draw.line([(50, 40), (50, 250)], (0,0,0))
+    draw.line([(50, 250), (530, 250)], (0,0,0))
+
+    # draw labels (y-axis)
+    draw.text((5, 20),  'Required Grade', (255,0,0))
+    draw.text((25, 40), '100%', (0,0,0))
+    draw.text((25, 60), '90%', (0,0,0))
+    draw.text((25, 80), '80%', (0,0,0))
+    draw.text((25, 100), '70%', (0,0,0))
+    draw.text((25, 120), '60%', (0,0,0))
+    draw.text((25, 140), '50%', (0,0,0))
+    draw.text((25, 160), '40%', (0,0,0))
+    draw.text((25, 180), '30%', (0,0,0))
+    draw.text((25, 200), '20%', (0,0,0))
+    draw.text((25, 220), '10%', (0,0,0))
+    draw.text((25, 250), '0%', (0,0,0))
+
+    # draw labels (x-axis)
+    draw.text((250, 260),  'Grade Achieved', (0,0,255), None, 4, 'center')
+    draw.text((525, 250), '100%', (0,0,0))
+    draw.text((475, 250), '90%', (0,0,0))
+    draw.text((425, 250), '80%', (0,0,0))
+    draw.text((375, 250), '70%', (0,0,0))
+    draw.text((325, 250), '60%', (0,0,0))
+    draw.text((275, 250), '50%', (0,0,0))
+    draw.text((225, 250), '40%', (0,0,0))
+    draw.text((175, 250), '30%', (0,0,0))
+    draw.text((125, 250), '20%', (0,0,0))
+    draw.text((75, 250), '10%', (0,0,0))
+    draw.text((25, 250), '0%', (0,0,0))
+
+    image = image.save("C:\\Users\\sbrug\\Desktop\\test.png")
+
+draw_image()
