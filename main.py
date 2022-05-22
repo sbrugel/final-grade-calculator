@@ -8,7 +8,7 @@ def main():
 
     while not valid_input:
         while not inputstr[0] == '':
-            print('Enter a known grade (decimal from 0) and its weight (decimal from 0 to 1), separated by a space. To stop inputting grades, enter nothing. > ')
+            print('Enter a known grade (decimal >= 0) and its weight (decimal from 0 to 1), separated by a space. To stop inputting grades, enter nothing. > ')
             inputstr = input().split(' ')
             try:
                 grades.append(float(inputstr[0]))
@@ -43,19 +43,20 @@ def main():
             # reset inputs; requires a full restart
             inputstr = 'X'
             grades = weights = []
+            summation = 0
 
             continue
 
         target = -1
-        while target < 0 or target > 100:
-            print('Now enter your target grade percentage (integer from 0-100). > ')
+        while target < 0:
+            print('Now enter your target grade percentage (integer >= 0). > ')
             try:
-                target = int(input())
+                target = float(input())
             except:
                 print('Invalid input received. Please re-enter your input.')
                 continue
             else:
-                if target < 0 or target > 100:
+                if target < 0:
                     print('Target input out of range. Please re-enter your input.')
                     continue
 
