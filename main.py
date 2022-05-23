@@ -35,18 +35,6 @@ def main():
                 print('Invalid input received. Please re-enter your input.')
                 continue
 
-        summation = sum(weights) + unknown_weight
-
-        if not summation == 1:
-            print('Weights must total to 1, however, the provided inputs total to ' + str(summation) + '. Please re-enter your input.')
-
-            # reset inputs; requires a full restart
-            inputstr = 'X'
-            grades = weights = []
-            summation = 0
-
-            continue
-
         target = -1
         while target < 0:
             print('Now enter your target grade percentage (integer >= 0). > ')
@@ -73,8 +61,8 @@ def main():
         elif total < 0:
             print('\tIt looks like this grade isn\'t possible :) Technically...')
         print('\tYou will need about a ' + str(total) + '% to achieve a final grade of ' + str(target) + '%.')
-        print('\tThe highest final grade that can be achieved (grade on assignment is 100%) is ' + str(sum(weighted_grades) + (100*unknown_weight)) + '%')
-        print('\tThe lowest final grade that can be achieved (grade on assignment is 0%) is ' + str(sum(weighted_grades)) + '%')
+        print('\tThe highest final grade that can be achieved (grade on assignment is 100%) is ' + round((str(sum(weighted_grades) + (100*unknown_weight))), 2) + '%')
+        print('\tThe lowest final grade that can be achieved (grade on assignment is 0%) is ' + round((str(sum(weighted_grades))), 2) + '%')
 
         # ask user if they want image drawn here
         print('Would you like a graph drawn of achieved grades vs. final grade achieved? (y/n) > ')
