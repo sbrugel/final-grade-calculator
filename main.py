@@ -61,8 +61,8 @@ def main():
         elif total < 0:
             print('\tIt looks like this grade isn\'t possible :) Technically...')
         print('\tYou will need about a ' + str(total) + '% to achieve a final grade of ' + str(target) + '%.')
-        print('\tThe highest final grade that can be achieved (grade on assignment is 100%) is ' + round((str(sum(weighted_grades) + (100*unknown_weight))), 2) + '%')
-        print('\tThe lowest final grade that can be achieved (grade on assignment is 0%) is ' + round((str(sum(weighted_grades))), 2) + '%')
+        print('\tThe highest final grade that can be achieved (grade on assignment is 100%) is ' + str(round(((sum(weighted_grades) + (100*unknown_weight))), 2)) + '%')
+        print('\tThe lowest final grade that can be achieved (grade on assignment is 0%) is ' + str(round(((sum(weighted_grades))), 2)) + '%')
 
         # ask user if they want image drawn here
         print('Would you like a graph drawn of achieved grades vs. final grade achieved? (y/n) > ')
